@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/chatcss.css">
+    <title>Register</title>
+</head>
+<body>
+    <h2>Register</h2>
+    <div class="loginDiv">
+        <form action="/register" method="post">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            <br>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <br>
+            <input class="submit" type="submit" value="Register">
+            <p>Already have an account? <a class="submit" style="color:blue" th:href="@{/login}">Login</a></p>
+        </form>
+    </div>
+</body>
+</html>

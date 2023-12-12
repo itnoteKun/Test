@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<!--configuration核心配置文件     可以有多个环境-->
+<configuration>
+
+
+<!--每一个Mapper.XML都需要在Mybatis核心配置文件中注册！-->
+<!--    <mappers>-->
+<!--        <mapper resource="classpath:mapper/UsersMapper.xml"/>-->
+<!--    </mappers>-->
+</configuration>
+

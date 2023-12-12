@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="js/echarts.min.js"></script>
+    <script type="text/javascript" src="js/china.js"></script>
+    <script type="text/javascript" src="js/jquery-3.5.1.min.js"></script>
+    <link rel="stylesheet" href="css/comon0.css">
+    <style>
+        .inputSty{
+            background-color:rgba(241, 243, 244);
+            border-radius:17px;
+            }
+        .submitSty{
+            background-color:rgba(241, 243, 244);
+            background-img:url("static/picture/搜索.png");
+          }
+    </style>
+</head>
+<body>
+<div class="boxall" style="height: 360px">
+    <div class="alltitle">气温标准差TOP</div>
+    <div class="navboxall">
+        <div class="sycm">
+            <ul class="clearfix" id="ulTop">
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    var cityTopOne = [];
+    var staDevTemp = [];
+    $.ajax({
+        url : '/staDevTempData',
+        dataType : 'json',
+        type : 'get',
+
+        success: function(datas){
+            for(var i = 0; i < 6; i++){
+                cityTopOne.push(datas[i].city);
+                staDevTemp.push(datas[i].standard_aveTemp);
+            }
+            console.log(cityTopOne)
+            console.log(staDevTemp)
+            for(var n = 0; n < cityTopOne.length; n++){
+                var span = document.createElement("span");
+                span.innerText = cityTopOne[n];
+                var h2 = document.createElement("h2");
+                h2.innerText = staDevTemp[n];
+                var li = document.createElement("li");
+
+                ul = document.getElementById("ulTop");
+                ul.insertBefore(li, ul.children[i]);
+                li.insertBefore(h2, li.children[0]);
+                li.insertBefore(span, li.children[1]);
+            }
+         }
+    })
+</script>
+</html>

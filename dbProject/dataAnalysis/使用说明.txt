@@ -1,0 +1,13 @@
+注意事项：
+1.启动mysql服务，查看相关数据库和表的编码是否为utf8，若不是则会出错
+2.运行模式为本地运行，而非打包去集群运行
+
+修改步骤：
+1.修改pom文件中hadoop-client版本为本地hadoop版本
+2.tempDriver.java文件27行MySQL的url及其后的用户名、密码
+3.根据tempDriver.java第39行创建表
+
+
+指标编写：
+在项目的src/main/java目录下新创建package然后开始编写
+编写思路详见数据分析流程.txt

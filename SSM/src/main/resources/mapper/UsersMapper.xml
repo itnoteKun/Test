@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace=绑定一个对应的Dao/Mapper接口-->
+
+<mapper namespace="com.csk.dao.UserDao">
+
+    <!--sql片段-->
+    <sql id="if-id">
+        <if test="id > 0">id = #{id}</if>
+    </sql>
+    <select id="getUserList" parameterType="java.lang.String" resultType="com.csk.pojo.Users">
+        select * from users
+        <where>
+            <choose>
+                <when test="user_name != null">user_name like '%${user_name}%'</when>
+                <when test="id > 0">id = #{id}</when>
+                <otherwise></otherwise>
+            </choose>
+        </where>
+    </select>
+    <select id="findByUsername" resultType="com.csk.pojo.Users" parameterType="java.lang.String">
+        select * from users where user_name = #{user_name}
+    </select>
+    <insert id="addUser">
+        insert into users values(#{id},#{user_name},#{password})
+    </insert>
+
+    <delete id="delUser">
+        delete from users where
+        <if test="id > 0">id=#{id}</if>
+    </delete>
+
+    <update id="updateUser">
+        update users set user_name=#{user_name},password=#{password} where
+        <include refid="if-id"></include>
+    </update>
+
+
+</mapper>
+
+

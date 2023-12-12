@@ -1,0 +1,24 @@
+1. 在Java中，以下合法的变量名是（）。
+	选项A:_Sum
+	选项B:var%
+	选项C:9var
+	选项D:My name
+答案:A
+2. 以下关于Java类和对象描述正确的是（）。
+	选项A:一个类只能有一个对象
+	选项B:对象是类的具体实例
+	选项C:对象是对现实世界中客观事物的抽象
+	选项D:使用class关键字定义一个对象
+答案:B
+3. 在WinForms中，消息框的返回值为（）类型。
+	选项A:MessageBox
+	选项B:DialogResult
+	选项C:Yes
+	选项D:No
+答案:B
+4. 在WinForms中，消息框的返回值为（）类型。
+	选项A:MessageBox
+	选项B:DialogResult
+	选项C:Yes
+	选项D:No
+答案:B

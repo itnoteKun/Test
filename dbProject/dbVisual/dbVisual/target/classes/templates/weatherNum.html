@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="js/echarts.min.js"></script>
+    <script type="text/javascript" src="js/china.js"></script>
+    <script type="text/javascript" src="js/jquery-3.5.1.min.js"></script>
+    <link rel="stylesheet" href="css/comon0.css">
+    <style>
+        .inputSty{
+            background-color:rgba(241, 243, 244);
+            border-radius:17px;
+            }
+        .submitSty{
+            background-color:rgba(241, 243, 244);
+            background-img:url("static/picture/搜索.png");
+          }
+
+    </style>
+</head>
+<body>
+<div class="boxall" style="height:350px;">
+    <input type="text" name="city" id="cityPie" class="inputSty" placeholder="请输入城市查询：">
+    <input type="submit" onclick="pieSubmit()" class="submitSty">
+    <div class="alltitle">各天气占比</div>
+    <div class="navboxall" id="echart1">
+    </div>
+</div>
+</body>
+<script>
+    function pieSubmit(){
+        var cityPie = document.getElementById("cityPie").value;
+        var pieData = [];
+        var chartDom = document.getElementById('echart1');
+        var myChart = echarts.init(chartDom);
+        $.ajax({
+            url: '/weatherNumData',
+            data : {
+                "city" : cityPie
+            },
+            cache : "false",
+            dataType: 'json',
+            type : "post",
+
+            success: function(datas){
+                for(var i = 0; i < datas.length; i++){
+                    var realPieData = {};
+                    realPieData["name"] = datas[i].weather;
+                    realPieData["value"] = datas[i].weatherNum;
+                    pieData.push(realPieData);
+                }
+                console.log(pieData)
+                var option = {
+                    title: {
+                    text: 'weather Pie',
+                    left: 'center',
+                    textStyle: {
+                    color: '#ccc'
+                    }
+                },
+                tooltip: {
+                    trigger: 'item'
+                },
+                visualMap: {
+                    show: false,
+                    min: 1,
+                    max: 365,
+                    inRange: {
+                    colorLightness: [0, 1]
+                    }
+                },
+                series: [
+                    {
+                    name: 'Weather',
+                    type: 'pie',
+                    radius: '55%',
+                    center: ['50%', '50%'],
+                    data: pieData.sort(function (a, b) {
+                        return a.value - b.value;
+                    }),
+                    roseType: 'radius',
+                    label: {
+                        color: 'rgba(255, 255, 255, 0.3)'
+                    },
+                    labelLine: {
+                        lineStyle: {
+                        color: 'rgba(255, 255, 255, 0.3)'
+                        },
+                        smooth: 0.2,
+                        length: 10,
+                        length2: 20
+                    },
+                    itemStyle: {
+                        color: '#c23531',
+                        shadowBlur: 200,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    },
+                    animationType: 'scale',
+                    animationEasing: 'elasticOut',
+                    animationDelay: function (idx) {
+                    return Math.random() * 200;
+                    }
+                    }
+                ]
+                }//option结束
+            myChart.setOption(option,true);
+            }//success结束
+    })//ajax结束
+    }
+</script>
+</html>

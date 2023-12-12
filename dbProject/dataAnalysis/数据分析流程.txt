@@ -1,0 +1,40 @@
+com.cityWeather.temp
+
+四个类：
+tempSeqBean		封装结果
+tempMapper		map阶段
+tempReducer		reduce阶段
+tempDriver		driver[提交job]
+
+关键：
+DBInputFormat类{
+	(1.)用于 从SQL表读取数据，底层一行一行读取表中的数据，返回<k,v>键值对
+	(2.)k是LongWritable类型，表中数据的记录行号
+	(3.)v是DBWritable类型，表示该行数据对应的对象类型
+}
+
+1.tempSeqBean
+	(1.)确定属性
+	(2.)实现gettter、setter、toString、构造方法
+	(3.)实现hadoop序列化接口Writable和数据库读取与写入接口DBWritable
+
+2.map阶段
+	Mapper<LongWritable, tempSeqBean, outKey, outValue>
+	LongWritable	即inKey，行数坐标，一般固定
+	tempSeqBean		即inValue，为读取数据库的行数据，为自己设定的类
+	outKey		输出<key, value>之key
+	outValue		输出<key, value>之value
+
+3.reduce
+	与map阶段类似
+
+4.driver
+	主函数
+	
+	主要流程：
+	(1.)创建job，一般需要一个conf参数
+	(2.)设置jar包路径
+	(3.)关联mapper和reducer
+	(4.)设置map和最终输出[是最终输出而不是reduce的原因是某些程序可以没有reduce]的<k,v>类型
+	(5.)设置输入路径与输出路径
+	(6.)提交job

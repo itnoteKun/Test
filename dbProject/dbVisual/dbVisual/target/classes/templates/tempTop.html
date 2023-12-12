@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="js/echarts.min.js"></script>
+    <script type="text/javascript" src="js/china.js"></script>
+    <script type="text/javascript" src="js/jquery-3.5.1.min.js"></script>
+    <link rel="stylesheet" href="css/comon0.css">
+</head>
+<body>
+<div class="boxall" style="height:360px;">
+    <div class="alltitle">标题样式</div>
+    <div class="navboxall">
+
+        <div class="sycm">
+            <ul class="clearfix" id="ul">
+
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    var city = [];
+    var tempAverage = [];
+    $.ajax({
+        url : '/tempTopData',
+        dataType : 'json',
+        type : 'get',
+
+        success: function(datas){
+            for(var i = 0; i < 6; i++){
+                city.push(datas[i].city);
+                tempAverage.push(datas[i].tempAverage);
+            }
+            console.log(city)
+            console.log(tempAverage)
+            for(var n = 0; n < city.length; n++){
+                var span = document.createElement("span");
+                span.innerText = city[n];
+                var h2 = document.createElement("h2");
+                h2.innerText = tempAverage[n] + "°C";
+                var li = document.createElement("li");
+
+                ul = document.getElementById("ul");
+                ul.insertBefore(li, ul.children[i]);
+                li.insertBefore(h2, li.children[0]);
+                li.insertBefore(span, li.children[1]);
+            }
+        }
+    })
+</script>
+</html>

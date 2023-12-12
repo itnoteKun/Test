@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script type="text/javascript" src="js/echarts.min.js"></script>
+    <script type="text/javascript" src="js/china.js"></script>
+    <script type="text/javascript" src="js/jquery-3.5.1.min.js"></script>
+    <link rel="stylesheet" href="css/comon0.css">
+</head>
+<body>
+<div class="boxall" style="height: 360px">
+    <div class="alltitle">每月数据</div>
+    <input type="text" name="province" id="province" placeholder="请输入省份查询：">
+    <input type="submit" onclick="monthSubmit()">
+    <div class="navboxall" id="main">
+
+    </div>
+</div>
+
+<script>
+    function monthSubmit(){
+        var province = document.getElementById("province").value;
+        console.log(province);
+
+        var chartDom = document.getElementById('main');
+        var myChart = echarts.init(chartDom);
+
+        var month = [];
+        var tempMaxData = [];
+        var tempMinData = [];
+        var windLevelData = [];
+
+        const colors = ['#5470C6', '#91CC75', '#EE6666'];
+
+        $.ajax({
+            url: '/monthDataGet',
+            data : {
+                "province" : province
+            },
+            cache : "false",
+            dataType: 'json',
+            type : "post",
+
+            success: function(datas){
+                for(var i = 0; i < datas.length; i++){
+                    month.push(datas[i].month);
+                    tempMaxData.push(datas[i].tempMax);
+                    tempMinData.push(datas[i].tempMin);
+                    windLevelData.push(datas[i].windLevel);
+                }
+                var option = {
+                    color: colors,
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                        type: 'cross'
+                        }
+                    },
+                    grid: {
+                        right: '20%'
+                    },
+                    toolbox: {
+                        feature: {
+                        dataView: { show: true, readOnly: false },
+                        restore: { show: true },
+                        saveAsImage: { show: true }
+                        }
+                    },
+                    legend: {
+                        data: ['tempMax', 'tempMin', 'windLevel']
+                    },
+                    xAxis: [
+                        {
+                        type: 'category',
+                        axisTick: {
+                            alignWithLabel: true
+                        },
+                        // prettier-ignore
+                            data: month
+                        }
+                    ],
+                    yAxis:[
+                        {
+                            type: 'value',
+                            name: '最高温',
+                            position: 'right',
+                            alignTicks: true,
+                            axisLine: {
+                                show: true,
+                                lineStyle: {
+                                color: colors[0]
+                                }
+                            },
+                             axisLabel: {
+                                formatter: '{value} °C'
+                            }
+                        },
+                        {
+                            type: 'value',
+                            name: '最低温',
+                            position: 'right',
+                            alignTicks: true,
+                            offset: 80,
+                            axisLine: {
+                                show: true,
+                                lineStyle: {
+                                color: colors[1]
+                                }
+                            },
+                            axisLabel: {
+                                formatter: '{value} °C'
+                            }
+                        },
+                        {
+                            type: 'value',
+                            name: '风力级别',
+                            position: 'left',
+                            alignTicks: true,
+                            axisLine: {
+                                show: true,
+                                lineStyle: {
+                                color: colors[2]
+                                }
+                            },
+                            axisLabel: {
+                                formatter: '{value} 级'
+                            }
+                            }
+
+                    ],
+                    series: [
+                            {
+                            name: 'tempMax',
+                            type: 'bar',
+                            data: tempMaxData
+                            },
+                            {
+                            name: 'tempMin',
+                            type: 'bar',
+                            yAxisIndex: 1,
+                            data: tempMinData
+                            },
+                            {
+                            name: 'windLevel',
+                            type: 'line',
+                            yAxisIndex: 2,
+                            data: windLevelData
+                            }
+                        ]
+                }
+                myChart.setOption(option,true);
+            }
+        })
+    }
+</script>
+</body>
+</html>

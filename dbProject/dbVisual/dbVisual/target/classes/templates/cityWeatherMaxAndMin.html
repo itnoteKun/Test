@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>城市最高温与最低温</title>
+    <style>
+        .box{
+            width: 1080px;
+            height: 642px;
+            background-color: rgb(188, 227, 236);
+            position: relative;
+        }
+    </style>
+    <script src="js/jquery-3.5.1.min.js"></script>
+</head>
+<body>
+<div class="box"></div>
+<script src="js/echarts.min.js"></script>
+<script>
+    var myChart = echarts.init(document.querySelector(".box"));
+    myChart.clear();
+    var city = [];
+    var weatherMax = [];
+    var weatherMin = [];
+    var num = 0;
+    $.ajax({
+        method: 'get',
+        url: '/cityWeatherMaxAndMinData',
+        dataType: 'json',
+        success: function(datas){
+            for(var i = 0; i < datas.length; i++){
+                city.push(datas[i].city);
+                weatherMax.push(datas[i].tempMax)
+                weatherMin.push(datas[i].tempMin);
+            }
+            console.log(weatherMax)
+
+            if (weatherMax.length>0){
+            num = Math.floor(100/(weatherMax.length / 7));
+            if (weatherMax.length > 7) {
+                showEchart = true;
+            }else {
+                showEchart = false;
+                }
+            }
+            var option = {
+                 xAxis: {
+                    type: 'category',
+                    data: city,
+                    axisLabel:{
+                        textStyle:{
+                            fontSize: 26
+                        },
+                    },
+                 },
+                 yAxis: {
+                    type: 'value'
+                },
+            series: [
+                {
+                    data: weatherMax,
+                    type: 'bar',
+                    showBackground: true,
+                    backgroundStyle: {
+                    color: 'rgba(180, 180, 180, 0.2)'
+                    }
+                }],
+
+            //设置鼠标悬浮文字信息提示
+            tooltip:{
+                trigger:'axis',
+                trigger:'axis',
+                backgroundColor:'rgba(32,33,36,.7)',
+                borderWidth:1,
+                textStyle:{//文字提示样式
+                    color:"#fff",
+                    fontSize:"36"
+                },
+                axisPointer:{
+                    type:"cross",
+                    label:{
+                        backgroundColor:"#6a7985"
+                    }
+                }
+            },
+
+            //设置滚动条，展示部分数据
+            dataZoom: [
+                    {
+                        type: 'slider',
+                        realtime: true,
+                        start: 0,
+                        end: num,  // 数据窗口范围的结束百分比。范围是：0 ~ 100。
+                        height: 5, //组件高度
+                        left: 5, //左边的距离
+                        right: 5, //右边的距离
+                        bottom: 20, //下边的距离
+                        show: showEchart,  // 是否展示
+                        fillerColor: "rgba(17, 100, 210, 0.42)", // 滚动条颜色
+                        borderColor: "rgba(17, 100, 210, 0.12)",
+                        handleSize: 0,      //两边手柄尺寸
+                        showDetail: false, //拖拽时是否展示滚动条两侧的文字
+                        zoomLock: true,         //是否只平移不缩放
+                        moveOnMouseMove: false, //鼠标移动能触发数据窗口平移
+                        //zoomOnMouseWheel: false, //鼠标移动能触发数据窗口缩放
+
+                         startValue: 0, // 从头开始。
+                         endValue: 6,  // 最多六个
+                         minValueSpan: 6,  // 放大到最少几个
+                         maxValueSpan: 6,  //  缩小到最多几个
+                    },
+                    {
+                        type: "inside",  // 支持内部鼠标滚动平移
+                        start: 0,
+                        end: num,
+                        zoomOnMouseWheel: false,  // 关闭滚轮缩放
+                        moveOnMouseWheel: true, // 开启滚轮平移
+                        moveOnMouseMove: true  // 鼠标移动能触发数据窗口平移
+                    }
+                ]
+
+            };
+            myChart.setOption(option,true);
+        }
+    })
+</script>
+</body>
+</html>

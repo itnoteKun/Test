@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="js/jquery-3.5.1.min.js"></script>
+    <script src="js/echarts.min.js"></script>
+    <link rel="stylesheet" href="css/comon0.css">
+
+</head>
+<body>
+
+<div class="boxall" style="height: 360px">
+    <input type="text" name="province" id="province" class="inputSty">
+    <input type="submit" value="提交" onclick="submit()">
+    <div class="alltitle">各风向次数</div>
+    <div class="navboxall" id="main">
+
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+    function submit(){
+        var province = document.getElementById("province").value;
+        console.log(province);
+
+        var chartDom = document.getElementById("main");
+        var myChart = echarts.init(chartDom);
+        var source = [];
+        $.ajax({
+        url: '/lineChartData',
+        data : {
+            "province" : province
+            },
+        cache : "false",
+        dataType: 'json',
+        type : "post",
+        success: function(datas){
+            for(var i = 0; i < datas.length; i++){
+                var realData = [];
+                realData.push(datas[i].windDir);
+                realData.push(datas[i].windDirNum);
+                source.push(realData);
+            }
+
+            var option = {
+                dataset: [
+            {
+                dimensions: ['windDir', 'windDirNum'],
+                source: source
+            },
+            {
+            transform: {
+                type: 'sort',
+                config: { dimension: 'windDirNum', order: 'desc' }
+            }
+            }
+            ],
+            xAxis: {
+                type: 'category',
+                axisLabel: { interval: 0, rotate: 30 }
+            },
+            yAxis: {},
+            series: {
+            type: 'bar',
+            encode: { x: 'windDir', y: 'windDirNum' },
+            datasetIndex: 1
+            }
+        }
+            myChart.setOption(option,true);
+        }
+
+    })
+}
+</script>
+</html>

@@ -1,0 +1,7 @@
+1.导入pom.xml
+2.修改application.yaml中的数据库配置
+3.主函数入口在mainApplication.java
+4.运行主函数后，在浏览器输入http://localhost:8888/dbVisual进行访问
+
+注意：！！！
+数据库表名及字段名、字段类型必须与我的一致！！！

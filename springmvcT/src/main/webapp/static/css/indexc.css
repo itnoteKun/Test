@@ -1,0 +1,26 @@
+body{
+    background-color: #fff;
+    min-width: 1226px;
+    font-size: 14px;
+    color: #333;
+    margin: 0;
+    line-height: 1.5;
+    font-family: "Helvetica Neue", Helvetica, Arial, "Microsoft Yahei", "Hiragino Sans GB", "Heiti SC", "WenQuanYi Micro Hei", sans-serif;
+}
+
+h2{
+    text-align:center;
+}
+
+p{
+    font-size:12px;
+}
+
+a{
+    text-decoration: none;
+    color: #303030;
+}
+
+a:hover {
+    color: #f25f33;
+}

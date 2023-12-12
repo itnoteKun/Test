@@ -1,0 +1,5 @@
+1.修改getWebData.py文件中的self.headers为自己浏览器的headers
+2.修改dbConnect.py文件中的host为集群中运行mysql服务的虚拟机地址
+3.修改dbConnect.py文件中的用户名及密码
+4.修改dbConnect.py文件中的self.database为自己创建的database名称，或者先在mysql中创建该数据库
+5.为了方便调试，在编写过程中main.py文件第92行中断了程序，使用过程中可以删除[建议确定可以运行后再进行修改]

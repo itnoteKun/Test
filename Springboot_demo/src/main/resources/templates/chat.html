@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- 省略其他头部信息 -->
+    <link rel="stylesheet" href="../static/css/chatcss.css">
+    <title>Chatroom</title>
+</head>
+
+<body>
+
+<h2>Chatroom</h2>
+<div class="bigDiv">
+    <div id="chat" class="chatDiv">
+    </div>
+
+    <form id="messageForm">
+        <label for="message">Message:</label>
+        <input type="text" id="message" name="message" required>
+        <input type="submit" value="Send">
+    </form>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+
+    $(document).ready(function () {
+        $.get("/chat1", function (data) {
+            updateChat(data);
+        });
+
+        $("#messageForm").submit(function (event) {
+            event.preventDefault();  // 取消元素默认行为
+            var message = $("#message").val(); // 获取id=message的text值
+
+            $.post("/chat", { "message": message }, function (data) {
+                updateChat(data);
+            });
+
+            $("#message").val("");
+        });
+
+        function updateChat(chatMessages) {
+            var chatDiv = $("#chat");
+            chatDiv.empty();
+
+            $.each(chatMessages, function (index, message) {
+                var dateObject = new Date(message.time);
+                var year = dateObject.getFullYear();
+                var month = ('0' + (dateObject.getMonth() + 1)).slice(-2);
+                var day = ('0' + dateObject.getDate()).slice(-2);
+                var hours = ('0' + dateObject.getHours()).slice(-2);
+                var minutes = ('0' + dateObject.getMinutes()).slice(-2);
+                var seconds = ('0' + dateObject.getSeconds()).slice(-2);
+                var formmattedTime = year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds;
+                chatDiv.append("<p>" + formmattedTime + "</p>")
+                chatDiv.append("<p>" + message.username + ": " + message.message + "</p>");
+            });
+        }
+
+
+    });
+</script>
+
+
+</body>
+</html>
